@@ -1,0 +1,5 @@
+{
+  "name": "Super Chatbot",
+  "description": "A sleek and responsive chatbot application powered by the Google Gemini API. Engage in natural conversations and get instant responses in a beautiful chat interface.",
+  "requestFramePermissions": []
+}
