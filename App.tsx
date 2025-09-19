@@ -3,7 +3,7 @@ import { Message } from './types';
 import ChatMessage from './components/ChatMessage';
 import ChatInput from './components/ChatInput';
 import TypingIndicator from './components/TypingIndicator';
-import { sendMessageToWebhook } from './services/geminiService';
+import { getWebhookResponse } from './services/geminiService';
 
 const ButterflyIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-white/80">
@@ -36,12 +36,16 @@ const App: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const responseText = await sendMessageToWebhook(text);
+      const responseText = await getWebhookResponse(text);
       const modelMessage: Message = { id: (Date.now() + 1).toString(), text: responseText, sender: 'model' };
       setMessages(prev => [...prev, modelMessage]);
     } catch (error) {
-      console.error('Error sending message:', error);
-      const errorMessage: Message = { id: (Date.now() + 1).toString(), text: 'Sorry, something went wrong. Please try again.', sender: 'model' };
+      console.error('Error getting response:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: 'Sorry, something went wrong while connecting to the server. Please try again.',
+        sender: 'model'
+      };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
       setIsLoading(false);
